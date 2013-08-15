@@ -92,7 +92,8 @@ class Chef
       def wait_task(connection, task_id)
         status, errormsg, start_time, end_time = connection.wait_task_completion task_id
         puts "Done!"
-        out_msg("Summary", "Status: #{ui.color(status, :cyan)} - started at #{start_time} and ended at #{end_time}")
+        #remove out_msg - status, errormsg, start_time, end_time all return nil
+        #out_msg("Summary", "Status: #{ui.color(status, :cyan)} - started at #{start_time} and ended at #{end_time}")
 
         if errormsg
           puts ui.color("ATTENTION: #{errormsg}", :red)
