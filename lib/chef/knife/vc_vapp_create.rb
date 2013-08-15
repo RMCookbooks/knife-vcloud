@@ -35,7 +35,10 @@ class Chef
 
         connection.login
 
-        vapp_id, task_id = connection.create_vapp_from_template vdc_id, name, description, templateId
+        vapp_ids = connection.create_vapp_from_template vdc_id, name, description, templateId
+        
+        task_id = vapp_ids[:task_id]
+        vapp_id = vapp_ids[:vapp_id]
 
         print "vApp creation..."
         wait_task(connection, task_id)
