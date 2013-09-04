@@ -45,9 +45,9 @@ class Chef
         list = ["#{ui.color('vAPPS', :cyan)}", '', '', '']
         list << header
         list.flatten!
-        vdc[:vapps].each do |k, v|
+        vdc[:vapps].each do |k, v, vms_hash|
           vapp = connection.get_vapp v
-          list << ("#{k} (#{vms_hash.count} VMs)" || '')
+          list << ("#{k} (#{vms_hash} VMs)" || '')
           list << (v || '')
           list << (vapp[:status] || '')
           list << (vapp[:ip] || '')
