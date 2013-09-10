@@ -42,7 +42,7 @@ GEM
     gyoku (1.0.0)
       builder (>= 2.1.2)
     highline (1.6.19)
-    httpclient (2.3.3)
+    httpclient (>= 2.2.0.2)
     httpi (2.0.2)
       rack
     ipaddress (0.8.0)
