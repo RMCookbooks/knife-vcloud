@@ -74,6 +74,7 @@ class Chef
 
         vm_id = @name_args.shift
         network_name = @name_args.shift
+        network2_name = @name_args.shift
 
         connection.login
 
@@ -89,7 +90,7 @@ class Chef
           :ip_2_allocation_mode => locate_config_value(:vm_ip_2_allocation_mode)
         }
 
-        task_id, response = connection.set_vm_network_config vm_id, network_name, network_2_name, config
+        task_id, response = connection.set_vm_network_config vm_id, network_name, network2_name, config
 
         print "VM network configuration..."
         wait_task(connection, task_id)
