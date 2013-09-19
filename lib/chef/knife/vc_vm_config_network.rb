@@ -50,7 +50,7 @@ class Chef
 
       option :vm_net_2_index,
              :long => "--net2-index NETWORK_IDX",
-             :description => "Index of the current network interface (default 1)"
+             :description => "Index of the current network interface (default 1)",
              :default => '1'
 
       option :vm_net_2_ip,
@@ -89,7 +89,7 @@ class Chef
           :ip_2_allocation_mode => locate_config_value(:vm_ip_2_allocation_mode)
         }
 
-        task_id, response = connection.set_vm_network_config vm_id, network_name, network_2_name config
+        task_id, response = connection.set_vm_network_config vm_id, network_name, network_2_name, config
 
         print "VM network configuration..."
         wait_task(connection, task_id)
