@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = %q{knife-vcloud}
-  s.version = "0.2.5"
+  s.version = "0.2.6"
   s.date = %q{2013-09-19}
   s.authors = ["Stefano Tortarolo"]
   s.email = ['stefano.tortarolo@gmail.com']
@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "chef", ">= 0.10.0"
   s.add_dependency "knife-windows", ">= 0"
-  s.add_dependency "vcloud-rest", "~> 0.3.0"
+  s.add_dependency "vcloud-rest", "~> 0.3.4"
   s.require_path = 'lib'
   s.files = ["CHANGELOG.md","README.md", "LICENSE"] + Dir.glob("lib/**/*")
 end
