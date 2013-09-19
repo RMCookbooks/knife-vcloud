@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/RMCookbooks/vcloud-rest.git
-  revision: 308c0a29c45dfc59156decd2bc3d1001882ddd18
+  revision: 49ff1a9bb11d94219f78adc7e382c855b50226a8
   specs:
-    vcloud-rest (0.3.1)
+    vcloud-rest (0.3.4)
       httpclient (~> 2.3.3)
       nokogiri (~> 1.6.0)
       rest-client (~> 1.6.7)
@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    knife-vcloud (0.2.4)
+    knife-vcloud (0.2.5)
       chef (>= 0.10.0)
       knife-windows
       vcloud-rest (~> 0.3.0)
