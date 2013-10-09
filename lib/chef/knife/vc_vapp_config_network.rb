@@ -1,21 +1,3 @@
-#
-# Author:: Stefano Tortarolo (<stefano.tortarolo@gmail.com>)
-# Copyright:: Copyright (c) 2012
-# License:: Apache License, Version 2.0
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-
 require 'chef/knife/vc_common'
 
 class Chef
@@ -24,6 +6,21 @@ class Chef
       include Knife::VcCommon
 
       banner "knife vc vapp config network [VAPP_ID] [NETWORK_NAME] (options)"
+
+      option :vapp_id,
+             :long => "--vapp_id VAPP_ID",
+             :description => "UUID of VAPP"
+
+      option :network_name,
+             :long => "--network_name",
+             :description => "NETWORK NAME",
+             :default => nil
+
+      option :network_name2,
+             :long => "--network_name2",
+             :description => "NETWORK NAME of NET 2",
+             :default => nil
+
 
       option :fence_mode,
              :short => "-F FENCE_MODE",
@@ -38,23 +35,43 @@ class Chef
              :boolean => true,
              :default => true
 
+      option :fence_mode2,
+             :long => "--fence-mode2 FENCE_MODE",
+             :description => "Set Fence Mode (e.g., Isolated, Bridged)"
+
+      option :retain_network2,
+             :long => "--[no-]retain-network2",
+             :description => "Toggle Retain Network across deployments (default true)",
+             :proc => Proc.new { |key| Chef::Config[:knife][:retain_network2] = key },
+             :boolean => true,
+             :default => true
+
+
       def run
         $stdout.sync = true
 
-        vapp_id = @name_args.shift
-        network_name = @name_args.shift
+        vapp_id = locate_config_value(:vapp_id)
+        network_name = locate_config_value(:nework_name)
+        network_name2 = locate_config_value(:network_name2)
 
         connection.login
 
         config = {
           :fence_mode => locate_config_value(:fence_mode),
-          :retain_net => locate_config_value(:retain_net)
+          #:parent_network => locate_config_value(:network_name),
+          :retain_net => locate_config_value(:retain_net),
+          :fence_mode2 => locate_config_value(:fence_mode2),
+          #:parent_network2 => locate_config_value(:network_name2),
+          :retain_net => locate_config_value(:retain_net2)
         }
 
-        task_id, response = connection.set_vapp_network_config vapp_id, network_name, config
+        task_id, response = connection.set_vapp_network_config vapp_id, network_name, network_name2, config
+        puts response.inspect
+        puts task_id
 
         print "vApp network configuration..."
-        wait_task(connection, task_id)
+        puts wait_task(connection, task_id)
+        
 
         connection.logout
       end

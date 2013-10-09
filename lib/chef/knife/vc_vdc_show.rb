@@ -40,6 +40,9 @@ class Chef
         ]
 
         vdc = connection.get_vdc vdc_id
+        puts net = vdc[:networks]
+             puts net["DB"]
+             puts net ["APP"]
 
         puts "#{ui.color('Description:', :cyan)} #{vdc[:description]}"
         list = ["#{ui.color('vAPPS', :cyan)}", '', '', '']
