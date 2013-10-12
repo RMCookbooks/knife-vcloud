@@ -284,6 +284,7 @@ class Chef
 
       
       if locate_config_value(:no_bootstrap) == false
+        sleep 20
         bootstrap_for_node(name, bootip).run
       end
 
@@ -292,7 +293,7 @@ class Chef
          
    def bootstrap_for_node(name, bootip)
         bootstrap = Chef::Knife::Bootstrap.new
-        bootstrap.name_args = #{bootip}
+        bootstrap.name_args = bootip
         bootstrap.config[:run_list] = config[:run_list]
         bootstrap.config[:ssh_user] = config[:ssh_user]
         bootstrap.config[:identity_file] = config[:identity_file]
