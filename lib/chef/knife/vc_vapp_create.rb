@@ -168,6 +168,37 @@ class Chef
              :description => "Set mode bridge or isolated (default bridged)",
              :default => 'bridged'
 
+      def tcp_test_ssh(bootip, port)
+        tcp_socket = TCPSocket.new(bootip, port)
+        readable = IO.select([tcp_socket], nil, nil, 5)
+        if readable
+          Chef::Log.debug("sshd accepting connections on #{bootip}, banner is #{tcp_socket.gets}")
+          yield
+          true
+        else
+          false
+        end
+      rescue Errno::ETIMEDOUT
+        false
+      rescue Errno::EPERM
+        false
+      rescue Errno::ECONNREFUSED
+        sleep 2
+        false
+      rescue Errno::EHOSTUNREACH
+        sleep 2
+        false
+     rescue Errno::ENETUNREACH
+        sleep 2
+        false
+     rescue Errno::ECONNRESET
+        sleep 2
+        false
+      ensure
+        tcp_socket && tcp_socket.close
+      end
+
+
       def run
         $stdout.sync = true
 
@@ -284,7 +315,11 @@ class Chef
 
       
       if locate_config_value(:no_bootstrap) == false
-        sleep 20
+          print "\n#{ui.color("Waiting for sshd", :magenta)}"
+          print(".") until tcp_test_ssh(bootip, 22) {
+            sleep @initial_sleep_delay ||= 10
+            puts("done")
+          }
         bootstrap_for_node(name, bootip).run
       end
 
