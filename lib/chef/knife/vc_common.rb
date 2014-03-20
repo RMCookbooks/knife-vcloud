@@ -57,6 +57,12 @@ class Chef
                  :description => "Your vCloud Organization",
                  :proc => Proc.new { |key| Chef::Config[:knife][:vcloud_org] = key }
 
+          option :vcloud_vdc,
+                 :short => "-V VDC",
+                 :long => "--vdc VDC",
+                 :description => "Your vCloud VDC",
+                 :proc => Proc.new { |key| Chef::Config[:knife][:vcloud_vdc] = key }
+
           option :vcloud_api_version,
                  :short => "-A API_VERSION",
                  :long => "--vcloud-api-version API_VERSION",
@@ -87,6 +93,17 @@ class Chef
       def locate_config_value(key)
         key = key.to_sym
         Chef::Config[:knife][key] || config[key]
+      end
+
+      def get_vapp(vapp_arg)
+        vapp = nil
+        vdcName = locate_config_value(:vcloud_vdc)
+
+          org_name = locate_config_value(:vcloud_org)
+          org = connection.get_organization_by_name org_name
+          vapp = connection.get_vapp_by_name org, vdcName, vapp_arg
+        raise ArgumentError, "VApp #{vapp_arg} not found" unless vapp
+        vapp
       end
 
       def wait_task(connection, task_id)
