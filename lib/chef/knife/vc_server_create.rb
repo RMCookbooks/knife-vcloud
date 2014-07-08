@@ -84,6 +84,16 @@ class Chef
         :description => "SSH Password for the user",
         :proc => Proc.new { |password| Chef::Config[:knife][:ssh_password] = password }
 
+      option :ssh_user,
+        :long => "--ssh-user USER",
+        :description => "SSH user",
+        :proc => Proc.new { |user| Chef::Config[:knife][:ssh_user] = user }
+
+      option :identity_file,
+        :short => "-i IDENTITY_FILE",
+        :long => "--identity-file IDENTITY_FILE",
+        :description => "The SSH identity file used for authentication"
+
       option :no_bootstrap,
         :long => "--no-bootstrap",
         :description => "Disable Chef bootstrap",
